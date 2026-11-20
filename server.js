@@ -139,6 +139,9 @@ app.get('/api/fit-reports', async (req, res) => {
   }
 });
 
+// Vercel runs this file as a serverless function, so it needs the app exported, not a port opened.
+export default app;
+
 // Connect to MongoDB first, then start listening. If the database is unreachable,
 // the server stops with a clear message instead of failing on the first request.
 try {
@@ -148,6 +151,6 @@ try {
   process.exit(1);
 }
 
-app.listen(PORT, () => {
+if (!process.env.VERCEL) app.listen(PORT, () => {
   console.log(`Fit-report server listening on http://localhost:${PORT}`);
 });
